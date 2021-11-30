@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(usethis)
 library(janitor)
+library(here)
 library(beepr)
 library(praise)
 library(cowsay)
@@ -65,5 +66,24 @@ storms %>%
   ggplot(aes(x = min_pressure, y = name)) +
   geom_col(aes(fill = name)) +
   scale_fill_paletteer_d("ggprism::floral2")
+```
+
+## One spatial data example
+
+```{r}
+vegetation <- read_sf(here("data", "doc.kml")) %>%
+  select(Name) %>%
+  clean_names()
+
+ggplot(data = vegetation) +
+  geom_sf(aes(fill = name), color = NA) + # fill color change based on dominant vegetation type, color of line to NA
+  theme_minimal() + # update theme to theme_minimal
+  scale_fill_paletteer_d("ggthemes::manyeys") + # select color scheme
+  labs(totle = "Jornada Basin LTER Vegetation",
+       caption = "Source: Jornada LTER")
+```
+
+```{r}
+ggsave(filename = "my_awesome_map.jpg", width = 8, height = 5) # save the last created ggplot
 ```
 
