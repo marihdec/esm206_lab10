@@ -1,0 +1,69 @@
+---
+title: "lab10_key"
+author: "Mari Herbst"
+date: "11/30/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# attach packages
+library(tidyverse)
+library(usethis)
+library(janitor)
+library(beepr)
+library(praise)
+library(cowsay)
+library(paletteer)
+library(sf)
+```
+
+## beepr beeps
+
+Use the function 'beep()' in the beepr package to make an audio alert when your code is done running.
+
+```{r}
+for (i in rev(seq(1:999))) {
+  print(paste(i, "bottles of beer on the wall"))
+} # for each element in this vector, print the number plus this string
+
+# add beep(x) to be notified when the code is done running
+```
+
+## praise and cowsay
+
+Packages built with a single purpose: to be kind and fun
+
+```{r}
+praise("${Exclamation}, ${EXCLAMATION}...${exclamation}!!!!")
+
+praise("Holy ${creating}, Batman - this code is ${ADJECTIVE}")
+```
+
+Use cowsay:say() to make a character say something to you
+
+```{r}
+say("Hi", by = "cow")
+```
+
+## usethis
+
+usethis::edit_r_profile to change the greeting animal or phrase when RStudio opens
+
+usethis::use_git() converts a non version controlled Rproj into a local git project (still only lives on this computer)
+
+usethis::use_github() turns the local git project into a remote github repo with version control
+
+## use paletteer to access thousands of color palettes
+
+```{r}
+storms %>%
+  group_by(name) %>%
+  summarize(min_pressure = min(pressure, na.rm = TRUE)) %>%
+  slice_min(n = 10, min_pressure) %>% # refine to the 10 storms w lowest pressure
+  ggplot(aes(x = min_pressure, y = name)) +
+  geom_col(aes(fill = name)) +
+  scale_fill_paletteer_d("ggprism::floral2")
+```
+
